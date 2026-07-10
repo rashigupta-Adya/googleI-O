@@ -83,7 +83,7 @@ var PLATFORMS = {
 
 function normalizePlatform(p) {
   var v = String(p || '').trim().toLowerCase();
-  return PLATFORMS[v] ? v : 'vanij';
+  return (v === 'all' || PLATFORMS[v]) ? v : 'vanij';
 }
 
 function firstName(name) {
@@ -176,6 +176,64 @@ function renderEmailText(platform, name, url) {
   return lines.join('\n');
 }
 
+// "All three" email — one card + Open button per platform. Sent when the visitor
+// picks "All three platforms" in the form.
+var ALL_ORDER = [
+  { slug: 'vanij', label: 'Vanij + SAI', verb: 'Build', blurb: 'One conversation that plans, builds, governs, deploys and monetises a complete product.' },
+  { slug: 'gtm', label: 'GTM', verb: 'Sell', blurb: 'One agent runs the entire go-to-market motion, end to end.' },
+  { slug: 'ras', label: 'RAS', verb: 'Think', blurb: 'Turns enterprise knowledge into board-ready executive decisions.' }
+];
+
+function renderAllEmailHTML(name, origin, leadId) {
+  var preheader = 'Open these on your laptop. One one-click link per platform.';
+  var blocks = ALL_ORDER.map(function (o) {
+    var accent = PLATFORMS[o.slug].accent;
+    var url = openUrl(o.slug, leadId, origin);
+    return '<tr><td style="padding:0 0 14px;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e6e8ec;border-radius:12px;"><tr><td style="padding:16px 18px;font-family:Arial,Helvetica,sans-serif;">' +
+      '<div style="font-size:16px;font-weight:700;color:#14161f;">' + esc(o.label) + ' <span style="color:' + accent + ';font-style:italic;">' + esc(o.verb) + '</span></div>' +
+      '<div style="font-size:14px;line-height:1.5;color:#3a3f4b;margin:6px 0 12px;">' + esc(o.blurb) + '</div>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:999px;background:' + accent + ';"><a href="' + esc(url) + '" style="display:inline-block;padding:10px 20px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:999px;">Open ' + esc(o.label) + ' &rarr;</a></td></tr></table>' +
+      '</td></tr></table></td></tr>';
+  }).join('');
+
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"></head>' +
+    '<body style="margin:0;padding:0;background:#f4f5f7;">' +
+    '<span style="display:none;max-height:0;overflow:hidden;opacity:0;color:#f4f5f7;">' + esc(preheader) + '</span>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;padding:24px 0;"><tr><td align="center">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e6e8ec;">' +
+    '<tr><td style="padding:22px 28px;border-bottom:1px solid #eef0f3;"><span style="font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.02em;color:#14161f;">Adya</span></td></tr>' +
+    '<tr><td style="padding:28px;font-family:Arial,Helvetica,sans-serif;">' +
+    '<p style="margin:0 0 14px;color:#14161f;font-size:16px;">Hi ' + esc(firstName(name)) + ',</p>' +
+    '<p style="margin:0 0 14px;color:#3a3f4b;font-size:15px;line-height:1.6;">Thanks for scanning at Google I/O Connect. You picked <strong style="color:#14161f;">all three platforms</strong>. Here is a one-click link for each.</p>' +
+    '<p style="margin:0 0 18px;color:#3a3f4b;font-size:15px;line-height:1.6;"><strong style="color:#14161f;">They run on desktop.</strong> Open this email on your laptop when you have twenty minutes, then open whichever you want to start with. Your links work for the next 7 days.</p>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + blocks + '</table>' +
+    '<hr style="border:none;border-top:1px solid #eef0f3;margin:8px 0 22px;">' +
+    '<p style="margin:0 0 4px;color:#3a3f4b;font-size:15px;line-height:1.6;">Docs: <a href="https://adya.ai/docs" style="color:#2C6BE0;">adya.ai/docs</a></p>' +
+    '<p style="margin:0 0 16px;color:#3a3f4b;font-size:15px;line-height:1.6;">Reply to this email. A person reads it.</p>' +
+    '<p style="margin:0;color:#14161f;font-size:15px;">Shayak<br><span style="color:#8a909c;">Co-founder, Adya</span></p>' +
+    '</td></tr>' +
+    '<tr><td style="padding:18px 28px;border-top:1px solid #eef0f3;color:#9aa0ac;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;">You are receiving this because you signed up at Google I/O Connect India 2026. <a href="https://adya.ai/privacy/" style="color:#9aa0ac;">Privacy</a> &middot; <a href="mailto:' + esc(env('RESEND_REPLY_TO', 'hello@adya.ai')) + '?subject=unsubscribe" style="color:#9aa0ac;">Unsubscribe</a></td></tr>' +
+    '</table></td></tr></table></body></html>';
+}
+
+function renderAllEmailText(name, origin, leadId) {
+  var lines = [];
+  lines.push('Hi ' + firstName(name) + ',');
+  lines.push('');
+  lines.push('Thanks for scanning at Google I/O Connect. You picked all three platforms. Here is a one-click link for each.');
+  lines.push('');
+  lines.push('They run on desktop. Open this email on your laptop, then open whichever you want to start with. Your links work for the next 7 days.');
+  lines.push('');
+  ALL_ORDER.forEach(function (o) { lines.push(o.label + ' (' + o.verb + '): ' + openUrl(o.slug, leadId, origin)); });
+  lines.push('');
+  lines.push('Docs: adya.ai/docs');
+  lines.push('Reply to this email. A person reads it.');
+  lines.push('');
+  lines.push('Shayak, Co-founder, Adya');
+  return lines.join('\n');
+}
+
 async function sendGioEmail(opts) {
   opts = opts || {};
   var platform = normalizePlatform(opts.platform);
@@ -185,20 +243,34 @@ async function sendGioEmail(opts) {
   var apiKey = env('RESEND_API_KEY', '');
   if (!apiKey) throw new Error('RESEND_API_KEY is not set');
 
-  var p = PLATFORMS[platform];
-  var url = openUrl(platform, opts.leadId, opts.siteOrigin);
   var from = env('RESEND_FROM', 'Adya <hello@adya.ai>');
   var replyTo = env('RESEND_REPLY_TO', 'hello@adya.ai');
+  var unsub = { 'List-Unsubscribe': '<mailto:' + replyTo + '?subject=unsubscribe>' };
 
-  var body = {
-    from: from,
-    to: [to],
-    reply_to: replyTo,
-    subject: p.subject,
-    html: renderEmailHTML(platform, opts.name, url, opts.siteOrigin),
-    text: renderEmailText(platform, opts.name, url),
-    headers: { 'List-Unsubscribe': '<mailto:' + replyTo + '?subject=unsubscribe>' }
-  };
+  var body;
+  if (platform === 'all') {
+    body = {
+      from: from,
+      to: [to],
+      reply_to: replyTo,
+      subject: 'Your Adya access is ready — Vanij, GTM and RAS (open on desktop)',
+      html: renderAllEmailHTML(opts.name, opts.siteOrigin, opts.leadId),
+      text: renderAllEmailText(opts.name, opts.siteOrigin, opts.leadId),
+      headers: unsub
+    };
+  } else {
+    var p = PLATFORMS[platform];
+    var url = openUrl(platform, opts.leadId, opts.siteOrigin);
+    body = {
+      from: from,
+      to: [to],
+      reply_to: replyTo,
+      subject: p.subject,
+      html: renderEmailHTML(platform, opts.name, url, opts.siteOrigin),
+      text: renderEmailText(platform, opts.name, url),
+      headers: unsub
+    };
+  }
 
   var resp = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -212,4 +284,4 @@ async function sendGioEmail(opts) {
   return { id: payload && payload.id, platform: platform };
 }
 
-module.exports = { sendGioEmail, openUrl, PLATFORMS, normalizePlatform, renderEmailHTML, renderEmailText };
+module.exports = { sendGioEmail, openUrl, PLATFORMS, normalizePlatform, renderEmailHTML, renderEmailText, renderAllEmailHTML, renderAllEmailText };

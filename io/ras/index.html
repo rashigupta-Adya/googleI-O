@@ -142,6 +142,15 @@
 
     <form id="io-form" class="io-card" novalidate>
       <div class="io-field">
+        <label for="io-platform">Which platform?</label>
+        <select class="io-input" id="io-platform" name="platform" required>
+          <option value="vanij">Vanij + SAI &mdash; Build</option>
+          <option value="gtm">GTM &mdash; Sell</option>
+          <option value="ras">RAS &mdash; Think</option>
+          <option value="all">All three platforms</option>
+        </select>
+      </div>
+      <div class="io-field">
         <label for="io-name">Full name</label>
         <input class="io-input" id="io-name" name="full_name" type="text" autocomplete="name" autofocus required placeholder="Your name">
       </div>
@@ -207,7 +216,6 @@
         <input id="io-company-url" name="company_url" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <input type="hidden" name="platform" value="ras">
       <button type="submit" class="io-submit">Email me the link <span class="arr">&rarr;</span></button>
       <p class="io-status" data-adya-form-status role="status" aria-live="polite"></p>
     </form>
@@ -221,7 +229,7 @@
       <p class="io-confirm-sub">Reading this on your phone? That's fine. Star the email and open it on your laptop later.</p>
     </div>
 
-    <p class="io-fine">We'll email you a one-click link to open <span data-platform-name>RAS</span> on desktop, plus occasional product updates if you opt in. Unsubscribe anytime. See our <a href="/privacy/">Privacy Policy</a>.</p>
+    <p class="io-fine">We'll email you a one-click link to open <span data-platform-name>RAS</span> on desktop, plus occasional product updates if you opt in. Unsubscribe anytime.</p>
   </main>
 </div>
 

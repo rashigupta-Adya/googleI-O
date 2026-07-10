@@ -116,7 +116,7 @@ function env(name, fallback) {
 
 function normalizePlatform(p) {
   const v = String(p || '').trim().toLowerCase();
-  return (v === 'gtm' || v === 'ras') ? v : 'vanij';
+  return (v === 'gtm' || v === 'ras' || v === 'all') ? v : 'vanij';
 }
 
 function makeLeadId() {

@@ -3,7 +3,7 @@
    Reuses the site's AdyaSheets.submit() network core, but owns
    the UX: platform hidden field, conditional team-size reveal,
    honeypot, source cookie, and the inline (no-redirect) confirmation.
-   Loaded with `defer`. Depends on /io/assets/sheets-submit.js.
+   Loaded with `defer`. Depends on /assets/js/sheets-submit.js.
    ========================================================= */
 (function () {
   'use strict';
@@ -54,18 +54,25 @@
     var submitBtn = form.querySelector('[type="submit"]');
     var confirmEl = document.getElementById('io-confirm');
 
+    function chosenName() {
+      var v = platformField && platformField.value;
+      if (v === 'all') return 'all three platforms';
+      return PLATFORM_NAMES[v] || platformName;
+    }
+
     function showConfirmation() {
       // Inline confirmation, no redirect (SOP 5.1).
+      var msg = 'You are in. Check your email for the link to open ' + chosenName() + ' on your laptop.';
       if (confirmEl) {
         var line = confirmEl.querySelector('[data-confirm-line]');
-        if (line) line.textContent = 'You are in. Check your email for the link to open ' + platformName + ' on your laptop.';
+        if (line) line.textContent = msg;
         form.hidden = true;
         confirmEl.hidden = false;
         confirmEl.setAttribute('tabindex', '-1');
         confirmEl.focus();
       } else if (statusEl) {
         statusEl.style.color = '#7EE7A8';
-        statusEl.textContent = 'You are in. Check your email for the link to open ' + platformName + ' on your laptop.';
+        statusEl.textContent = msg;
       }
     }
 
@@ -97,7 +104,7 @@
 
       var data = api.formData(form);          // collects + normalizes all named fields
       delete data.company_url;                 // never transmit the honeypot
-      data.platform = platform;
+      data.platform = (platformField && platformField.value) || platform;  // the dropdown choice (may be 'all')
       data.source = 'google_io_connect';
       data.event = 'gio_connect_2026';
       data.team_flag = (teamCheckbox && teamCheckbox.checked) ? 'true' : 'false';
