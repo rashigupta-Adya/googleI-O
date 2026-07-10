@@ -141,12 +141,15 @@ function tabForSheet(sheet) {
 
 function parseBody(body) {
   if (!body) return {};
+  if (Buffer.isBuffer(body)) body = body.toString('utf8');
+  // Vercel pre-parses JSON request bodies into an object; Netlify passes a raw string.
+  if (typeof body === 'object') return body;
   if (Buffer.byteLength(body, 'utf8') > MAX_BODY_BYTES) {
     const error = new Error('Request body is too large.');
     error.statusCode = 413;
     throw error;
   }
-  return typeof body === 'string' ? JSON.parse(body) : body;
+  return JSON.parse(body);
 }
 
 function base64Url(input) {
@@ -368,9 +371,6 @@ async function handleSubmission({ method, headers = {}, body }) {
     }
 
     const spreadsheetID = env('GOOGLE_SHEETS_SPREADSHEET_ID', '');
-    if (!spreadsheetID) {
-      throw new Error('Missing GOOGLE_SHEETS_SPREADSHEET_ID.');
-    }
 
     const data = normalizeData(payload.data);
     if (sheet === 'gio') {
@@ -379,17 +379,8 @@ async function handleSubmission({ method, headers = {}, body }) {
       data.platform = normalizePlatform(data.platform);
       if (!data.lead_id) data.lead_id = makeLeadId();
     }
+
     const tab = tabForSheet(sheet);
-    const token = await getAccessToken();
-    const sheetID = await ensureSheet(token, spreadsheetID, tab);
-    const existingHeaders = await readHeaders(token, spreadsheetID, tab);
-    const headersForRow = headerUnion(existingHeaders, Object.keys(data));
-
-    if (headersForRow.join('\u0001') !== existingHeaders.join('\u0001')) {
-      await writeHeaders(token, spreadsheetID, tab, headersForRow);
-      await boldHeader(token, spreadsheetID, sheetID, headersForRow.length);
-    }
-
     const metadata = {
       timestamp_utc: new Date().toISOString(),
       form_name: String(payload.form_name || ''),
@@ -398,12 +389,42 @@ async function handleSubmission({ method, headers = {}, body }) {
       user_agent: requestHeader(headers, 'user-agent'),
       ip: clientIP(headers)
     };
-    const row = headersForRow.map((header) => metadata[header] ?? data[header] ?? '');
-    const appendResult = await appendRow(token, spreadsheetID, tab, headersForRow, row);
-    await normalizeDataRows(token, spreadsheetID, sheetID, headersForRow.length, appendResult);
 
-    // gio: send the E1 welcome email. Lead is already saved, so a mail failure
-    // must NOT fail the request — the visitor still sees the inline confirmation.
+    let appendResult = {};
+    let columns = 0;
+    const writeRow = async () => {
+      const token = await getAccessToken();
+      const sheetID = await ensureSheet(token, spreadsheetID, tab);
+      const existingHeaders = await readHeaders(token, spreadsheetID, tab);
+      const headersForRow = headerUnion(existingHeaders, Object.keys(data));
+      if (headersForRow.join('\u0001') !== existingHeaders.join('\u0001')) {
+        await writeHeaders(token, spreadsheetID, tab, headersForRow);
+        await boldHeader(token, spreadsheetID, sheetID, headersForRow.length);
+      }
+      const row = headersForRow.map((header) => metadata[header] ?? data[header] ?? '');
+      appendResult = await appendRow(token, spreadsheetID, tab, headersForRow, row);
+      await normalizeDataRows(token, spreadsheetID, sheetID, headersForRow.length, appendResult);
+      columns = headersForRow.length;
+    };
+
+    let leadSaved = false;
+    if (sheet === 'gio') {
+      // Best-effort for gio: a missing or broken Sheets config must NOT block the
+      // welcome email or show the visitor an error. Falls back to email-only (test mode).
+      if (spreadsheetID) {
+        try { await writeRow(); leadSaved = true; }
+        catch (sheetErr) { console.error('gio sheet write failed (continuing to email):', sheetErr && sheetErr.message); }
+      } else {
+        console.warn('gio: GOOGLE_SHEETS_SPREADSHEET_ID not set - email-only test mode, lead NOT saved.');
+      }
+    } else {
+      if (!spreadsheetID) throw new Error('Missing GOOGLE_SHEETS_SPREADSHEET_ID.');
+      await writeRow();
+      leadSaved = true;
+    }
+
+    // gio: send the E1 welcome email. A mail failure must NOT fail the request -
+    // the visitor still sees the inline confirmation.
     let emailQueued = false;
     if (sheet === 'gio') {
       try {
@@ -417,7 +438,7 @@ async function handleSubmission({ method, headers = {}, body }) {
         });
         emailQueued = true;
       } catch (mailErr) {
-        console.error('gio E1 email failed (lead saved, will need a resend sweep):', mailErr && mailErr.message);
+        console.error('gio E1 email failed:', mailErr && mailErr.message);
       }
     }
 
@@ -425,8 +446,9 @@ async function handleSubmission({ method, headers = {}, body }) {
       ok: true,
       sheet,
       tab,
+      lead_saved: leadSaved,
       email_queued: emailQueued,
-      columns: headersForRow.length,
+      columns: columns,
       updated_range: appendResult.updatedRange || '',
       updated_rows: appendResult.updatedRows || 1,
       spreadsheet_id: spreadsheetID
