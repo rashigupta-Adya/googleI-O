@@ -139,7 +139,7 @@ function renderEmailHTML(platform, name, url, origin) {
     '<p style="margin:0 0 4px;color:#3a3f4b;font-size:15px;line-height:1.6;">Docs: <a href="https://adya.ai/docs" style="color:' + accent + ';">adya.ai/docs</a></p>' +
     '<p style="margin:0 0 16px;color:#3a3f4b;font-size:15px;line-height:1.6;">Reply to this email. A person reads it.</p>' +
     '<p style="margin:0 0 18px;color:#3a3f4b;font-size:15px;line-height:1.6;">' + esc(p.teamPrompt) + '</p>' +
-    '<p style="margin:0;color:#14161f;font-size:15px;">Shayak<br><span style="color:#8a909c;">Co-founder, Adya</span></p>' +
+    '<p style="margin:0;color:#14161f;font-size:15px;">The Adya team<br><span style="color:#8a909c;">adya.ai</span></p>' +
     '</td></tr>' +
     '<tr><td style="padding:18px 28px;border-top:1px solid #eef0f3;color:#9aa0ac;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;">You are receiving this because you signed up for ' + esc(p.name) + ' at Google I/O Connect India 2026. <a href="' + esc(resolveOrigin(origin)) + '/privacy/" style="color:#9aa0ac;">Privacy</a> &middot; <a href="mailto:' + esc(env('RESEND_REPLY_TO', 'hello@adya.ai')) + '?subject=unsubscribe" style="color:#9aa0ac;">Unsubscribe</a></td></tr>' +
     '</table></td></tr></table></body></html>';
@@ -172,7 +172,8 @@ function renderEmailText(platform, name, url) {
   lines.push('');
   lines.push(p.teamPrompt);
   lines.push('');
-  lines.push('Shayak, Co-founder, Adya');
+  lines.push('The Adya team');
+  lines.push('adya.ai');
   return lines.join('\n');
 }
 
@@ -211,7 +212,7 @@ function renderAllEmailHTML(name, origin, leadId) {
     '<hr style="border:none;border-top:1px solid #eef0f3;margin:8px 0 22px;">' +
     '<p style="margin:0 0 4px;color:#3a3f4b;font-size:15px;line-height:1.6;">Docs: <a href="https://adya.ai/docs" style="color:#2C6BE0;">adya.ai/docs</a></p>' +
     '<p style="margin:0 0 16px;color:#3a3f4b;font-size:15px;line-height:1.6;">Reply to this email. A person reads it.</p>' +
-    '<p style="margin:0;color:#14161f;font-size:15px;">Shayak<br><span style="color:#8a909c;">Co-founder, Adya</span></p>' +
+    '<p style="margin:0;color:#14161f;font-size:15px;">The Adya team<br><span style="color:#8a909c;">adya.ai</span></p>' +
     '</td></tr>' +
     '<tr><td style="padding:18px 28px;border-top:1px solid #eef0f3;color:#9aa0ac;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;">You are receiving this because you signed up at Google I/O Connect India 2026. <a href="https://adya.ai/privacy/" style="color:#9aa0ac;">Privacy</a> &middot; <a href="mailto:' + esc(env('RESEND_REPLY_TO', 'hello@adya.ai')) + '?subject=unsubscribe" style="color:#9aa0ac;">Unsubscribe</a></td></tr>' +
     '</table></td></tr></table></body></html>';
@@ -230,7 +231,8 @@ function renderAllEmailText(name, origin, leadId) {
   lines.push('Docs: adya.ai/docs');
   lines.push('Reply to this email. A person reads it.');
   lines.push('');
-  lines.push('Shayak, Co-founder, Adya');
+  lines.push('The Adya team');
+  lines.push('adya.ai');
   return lines.join('\n');
 }
 
