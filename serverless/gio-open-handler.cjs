@@ -25,9 +25,9 @@ function isMobileUA(ua) {
 
 function productUrl(platform, leadId) {
   var map = {
-    vanij: env('PRODUCT_SIGNUP_URL_VANIJ', ''),
-    gtm: env('PRODUCT_SIGNUP_URL_GTM', ''),
-    ras: env('PRODUCT_SIGNUP_URL_RAS', '')
+    vanij: env('PRODUCT_SIGNUP_URL_VANIJ', 'https://vanij.adya.ai/orchestrator'),
+    gtm: env('PRODUCT_SIGNUP_URL_GTM', 'https://gtm.adya.ai/orchestrator'),
+    ras: env('PRODUCT_SIGNUP_URL_RAS', 'https://esa.adya.ai/')
   };
   var base = map[platform];
   if (!base) {
