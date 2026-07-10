@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Open on your laptop — Adya</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/webp" href="/io/assets/adya-logo.webp">
+<link rel="preload" as="font" type="font/woff2" href="/io/assets/fonts/inter-latin.woff2" crossorigin>
+<style>
+  @font-face{font-family:'IO Sans';src:url('/io/assets/fonts/inter-latin.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;}
+  :root{
+    --fg:#F5F7FF;--fg-soft:rgba(245,247,255,0.85);--fg-muted:rgba(245,247,255,0.72);--fg-dim:rgba(245,247,255,0.55);
+    --surface:rgba(255,255,255,0.05);--surface-2:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.12);
+    --font-head:'IO Sans','Helvetica Neue',system-ui,sans-serif;--font-body:'IO Sans','Helvetica Neue',system-ui,sans-serif;
+    --accent:#9B8CFF;--accent-glow:rgba(155,140,255,0.15);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html,body{margin:0;padding:0;}
+  body{min-height:100dvh;background:linear-gradient(180deg,#06081A 0%,#0B0E22 30%,#0C1854 64%,#1B0F2E 88%,#2A0E2C 100%);color:var(--fg);font-family:var(--font-body);-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;}
+  body::before,body::after{content:"";position:fixed;pointer-events:none;z-index:0;}
+  body::before{top:-20%;right:-10%;width:80vw;height:60vh;background:radial-gradient(50% 50% at 50% 50%,rgba(184,53,100,0.26),transparent 70%);}
+  body::after{bottom:-15%;left:-15%;width:80vw;height:55vh;background:radial-gradient(50% 50% at 50% 50%,rgba(26,35,120,0.5),transparent 70%);}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;}
+  .io-wrap{position:relative;z-index:1;width:100%;max-width:520px;margin:0 auto;padding:0 20px 56px;min-height:100dvh;display:flex;flex-direction:column;}
+  .io-top{display:flex;align-items:center;padding:20px 0;}
+  .io-brand{display:inline-flex;align-items:center;gap:9px;}
+  .io-brand img{height:28px;width:auto;object-fit:contain;}
+  .io-wordmark{font-family:var(--font-head);font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--fg);}
+  main{margin:auto 0;}
+  .io-badge{width:52px;height:52px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--accent);color:var(--accent);}
+  .io-h1{font-family:var(--font-head);font-weight:700;font-size:clamp(32px,9vw,44px);line-height:1.05;letter-spacing:-0.02em;margin:22px 0 0;color:var(--fg);}
+  .io-h1 em{font-style:italic;color:var(--accent);}
+  .io-lead{font-family:var(--font-body);font-size:17px;line-height:1.5;color:var(--fg-soft);margin:14px 0 0;max-width:40ch;}
+  .io-sub{font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--fg-muted);margin:10px 0 0;}
+  .io-actions{display:flex;flex-direction:column;gap:10px;margin-top:26px;}
+  .io-btn{appearance:none;border:none;width:100%;height:50px;border-radius:999px;font-family:var(--font-head);font-weight:700;font-size:16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform .15s ease,opacity .15s ease;}
+  .io-btn-primary{background:var(--fg);color:#07091A;}
+  .io-btn-primary:hover{transform:translateY(-1px);}
+  .io-btn-ghost{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--fg);}
+  .io-req{margin-top:24px;padding:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;}
+  .io-req h2{margin:0 0 10px;font-family:var(--font-head);font-weight:700;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-soft);}
+  .io-req ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .io-req li{display:flex;gap:10px;align-items:flex-start;font-family:var(--font-body);font-size:14px;line-height:1.4;color:var(--fg-muted);}
+  .io-req svg{flex:0 0 auto;width:17px;height:17px;margin-top:1px;color:var(--accent);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="io-wrap">
+  <header class="io-top">
+    <a class="io-brand" href="https://adya.ai" aria-label="Adya home">
+      <img src="data:image/webp;base64,UklGRqAGAABXRUJQVlA4WAoAAAAQAAAAaAAAXAAAQUxQSDkDAAABkJZtbxVNSIiDrYPFAThgHICDwQE44HNQCUioBCREQiV0jumbNHv4GRESBKCNw8b0oO08bEfBkp7Q/Q9g3GJKxxy8D9pz+UKafP8LLiIi+R1rqYHdTrqVOtgpDbkAOHyOWCCM/n8n6HgcXECs/sYi7SmfSVwEuZvDlZdpkz42x3Pm7gWRBmffRR/6WEjvdsoJHNzhVGFBrIEk22BXEpCtri4VdnEOtutMHiXku0q0WocSw/d6qgq9P4nagtwpXApP2JwpLJDLQQrkQQLaBKSweZSoTHGkEApiPKhCdCQRQPN1M6XXn1TIbRVAexOuO4XC7E2iruDDagObXEE3Fwo/0ONQKgQHEuf38rQKyYUECC/ZxKIwAY3VXn7yBgOFtcVYTV9MWcGjBJxNNJ2jLpKbJ8y/3tE1xNf0aPYGpntPXUft3uHNqkA+0tA1B/07+jKRmZP1hdMfF3O6B9ulpm8tS0LC+7Fbmt67wWBNaBfXepHdbVFBCmZMvD2a1f1RTRZgpatdp8mWjJIdGVtt4AKBdw3DcNh3gNTRGPBVlmAzx47QXhRIFv6vwjVWQ1yF0TKDDFEXjQvC8iYmzGxbHA2sISECjGoFlHFxtEBkB0kMpgUUduILa6IxCNtJA5RNGEn8loJtw0hl+2kAo3i0r/uxaORRIDzgBZRV3a8nJ+wFm/itSXEUksJ5G/QI1BnkwhhRV3MWdT9KDEweUFDX/ThWLPCVPQLj4oj2LPjQUUzIKU7RtbQAhlgekmXgCoZ1/8L1MEBNHle4WUXoeGHPZmA1IYYVCG5uJoXlISTvhB4YLqH0hkRKk0d7BNoeJv1AbKgUOFjgYwo6Cdoz+voYmnwUFTQtrRXKDyo2pgx8QAGv+0eGGOF1CEbqbTAkMuFU9EDTAVWWUVVAJHosxBvk/IXXWhus+n2mCIa4AcAso357iN+xEIeLb5vAF9dyf/8vKuS7Zd8gFhVO+QnCIa4nOgeTo25TjBczx8QFh2acoVHPDyefM/EQ90Ty6584YWqTL0mqyS06DW0Df34bBRbiXkj1Fk/OmJhl1BMWSspOhotonGtryedHr88hSb24ln6aB+ocop/mibp/FToAVlA4IEADAADQEwCdASppAF0APpE6l0glsz+hM9Cse/ASCWwIcAGJDj68fFf8B5vlc/t+/InChefpb2AP1V6WvmA8630R/5b1AP7h1AHPyexh/d/+7gu/4QfKz3mLCdeAVvWMhVcVNv6SqkjFTIHlpvk8GbZRDBKl/hWiMLd50SxqA+JzYJFe5acN+sHBCgxDPU9Vh9QUBSR9vY+RBlgsgkAGp3LoIqSLqDddTdNYEAD+0cYmcLkJ/j/yk+9ju5qNHysj3H4AO9NOAAmwRLKbmtBy8Ei/NwXxQAWgzikn7Ek8/+bfyeluIE0Jpo+Fj73I8Afr+hzFYlLwCGbAnneztRpTi9vSMHkI9iLG4w4r2U1uat6kShFaq+9ZGb0nuJCtAGKc+m6Rten1OPu6RXUrk/5sriz/ABOgY2/d+ci/c+nHQ8aQxodjH25tTgyhwyxRSeb2RGoaPdasR2JU6pXtrSK6MzfOKoE4Mc6G+CPPsqbj/CG1Uv5twkqgUBR+8N9t//0FC2MO5vvMjpAIQ77wSYS/R+LgPrnMQw+l3auEr5NCT1B6WHHY1DPzKTCGIXVIFqidzfYA8jiXvWo4vfwiDAP9mo21oDECIJj9x7YtZoRqoTwoswYm3Dc3xqok6tRv+OyYpDVbx9xW8m/Gph9m0qIzr0oOB1QMTJHbaqQBXWFpXayEZIoa0sjYbsQCfz6OhzWPhVHKo9obfvY0fgilPm9mCYOjLUfBY87Vuhqxf7VRVgpXXvF4YrcTwEfOjgFc4zHsneyo6l6zJ8rutFXJpMEF3r03NvHls4Un/iH+AGv+dvyuMc2q+U5KwRGuQxlwnpSfm66iRXHSaqioawJI6MMsl7paXRu5Alt6ov3zihf57bdSdukLebjyeaK/Sj0CoYiv4TAPZA//9vpu+nLqqewVoLhSqdZMjAHZ6Ub8xtuM4nV9lKz6XYZS/We/LK5u1oHGxu/8Hb1/9w0EpuP22qy+vHcmxY5V4RNZhliZtwXdquwz1wZdM+BSzVD3ODKr/7ovf2oqvlxWxVsvyu36ymqI7p6GjWj5wfHZaBjSvxac4winv3RoJTcNXgo3BVLsMdu5K9cOXq8S6PNqjEwiMm0Z5oEQAAAA" alt="" width="32" height="28">
+      <span class="io-wordmark">Adya</span>
+    </a>
+  </header>
+  <main>
+    <span class="io-badge" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </span>
+    <h1 class="io-h1"><span data-platform-name>This</span> needs a <em>desktop</em>.</h1>
+    <p class="io-lead">It is a full workspace, not a phone app. It needs a real screen and a keyboard.</p>
+    <p class="io-sub">Your link still works. Open the email on your laptop, or copy the link below and paste it into your laptop browser.</p>
+
+    <div class="io-actions">
+      <button type="button" class="io-btn io-btn-primary" id="io-copy">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span id="io-copy-label">Copy my link</span>
+      </button>
+      <a class="io-btn io-btn-ghost" href="/io/">Back to all three platforms</a>
+    </div>
+
+    <div class="io-req">
+      <h2>What you'll need</h2>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>A laptop or desktop. Chrome, Edge, Safari or Firefox, current or one version back.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>A screen at least 1280px wide.</span></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var NAMES={vanij:'Vanij',gtm:'GTM',ras:'RAS'};
+  var ACCENTS={vanij:'#9B8CFF',gtm:'#46C8E8',ras:'#5B6BFF'};
+  var params=new URLSearchParams(location.search);
+  var p=(params.get('p')||'').toLowerCase();
+  var lead=params.get('lead')||'';
+  if(NAMES[p]){
+    document.querySelectorAll('[data-platform-name]').forEach(function(el){el.textContent=NAMES[p];});
+    document.documentElement.style.setProperty('--accent',ACCENTS[p]);
+    document.title='Open '+NAMES[p]+' on your laptop — Adya';
+  }
+  // The idempotent open-link: same link that was in the email; on desktop it redirects to the product.
+  var link=location.origin+'/api/io/open?p='+(p||'')+(lead?('&lead='+encodeURIComponent(lead)):'');
+  var btn=document.getElementById('io-copy'),label=document.getElementById('io-copy-label');
+  btn.addEventListener('click',function(){
+    function done(){label.textContent='Copied. Paste it on your laptop.';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(done,function(){window.prompt('Copy this link and open it on your laptop:',link);});
+    }else{window.prompt('Copy this link and open it on your laptop:',link);}
+  });
+})();
+</script>
+</body>
+</html>

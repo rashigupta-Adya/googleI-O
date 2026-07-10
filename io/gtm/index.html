@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GTM Agent on Adya — Google I/O Connect India 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sign up for GTM at Google I/O Connect India 2026. Scan on your phone, we email you a one-click link to open it on your laptop.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/webp" href="/io/assets/adya-logo.webp">
+<link rel="preload" as="font" type="font/woff2" href="/io/assets/fonts/inter-latin.woff2" crossorigin>
+<style>
+  /* ---- Self-hosted Inter latin subset (variable). Matches the GTM/ESA/SAI asset pages, which use Inter throughout. ---- */
+  @font-face{font-family:'IO Sans';src:url('/io/assets/fonts/inter-latin.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;}
+
+  /* ---- Tokens (copied inline from design-tokens.css to avoid an extra request) ---- */
+  :root{
+    --fg:#F5F7FF;
+    --fg-soft:rgba(245,247,255,0.85);
+    --fg-muted:rgba(245,247,255,0.72);
+    --fg-dim:rgba(245,247,255,0.55);
+    --surface:rgba(255,255,255,0.05);
+    --surface-2:rgba(255,255,255,0.03);
+    --border:rgba(255,255,255,0.12);
+    --border-input:rgba(255,255,255,0.13);
+    --font-head:'IO Sans','Helvetica Neue',system-ui,sans-serif;
+    --font-body:'IO Sans','Helvetica Neue',system-ui,sans-serif;
+    /* PLATFORM ACCENT — GTM */
+    --accent:#46C8E8;
+    --accent-grad:linear-gradient(120deg,#46C8E8 0%,#B6ECF7 50%,#46C8E8 100%);
+    --accent-glow:rgba(70,200,232,0.16);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;} /* beats .io-card/.io-field display:flex */
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100dvh;
+    background:linear-gradient(180deg,#06081A 0%,#0B0E22 28%,#0C1854 60%,#1B0F2E 84%,#2A0E2C 100%);
+    color:var(--fg);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* Radial glows — flat radial-gradients (no blur filter) for cheap paint on 3G. */
+  body::before,body::after{content:"";position:fixed;pointer-events:none;z-index:0;}
+  body::before{top:-20%;right:-10%;width:80vw;height:60vh;background:radial-gradient(50% 50% at 50% 50%,rgba(184,53,100,0.28),transparent 70%);}
+  body::after{bottom:-15%;left:-15%;width:80vw;height:55vh;background:radial-gradient(50% 50% at 50% 50%,rgba(26,35,120,0.55),transparent 70%);}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;}
+
+  .io-wrap{position:relative;z-index:1;width:100%;max-width:560px;margin:0 auto;padding:0 20px 56px;}
+
+  /* ---- Header ---- */
+  .io-top{display:flex;align-items:center;justify-content:space-between;padding:20px 0 8px;}
+  .io-brand{display:inline-flex;align-items:center;gap:9px;}
+  .io-brand img{height:28px;width:auto;object-fit:contain;}
+  .io-wordmark{font-family:var(--font-head);font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--fg);}
+
+  /* ---- Hero ---- */
+  .io-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-top:26px;padding:6px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-family:var(--font-head);font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--fg-soft);}
+  .io-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  .io-h1{font-family:var(--font-head);font-weight:700;font-size:clamp(38px,11vw,58px);line-height:1.03;letter-spacing:-0.024em;margin:18px 0 0;color:var(--fg);}
+  .io-h1 em{font-style:italic;background:var(--accent-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
+  .io-pitch{font-family:var(--font-body);font-size:clamp(16px,4.6vw,17.5px);line-height:1.5;color:var(--fg-muted);margin:16px 0 0;max-width:44ch;}
+
+  /* ---- Desktop notice (boxed, above the fold) ---- */
+  .io-notice{display:flex;gap:12px;align-items:flex-start;margin-top:22px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;}
+  .io-notice svg{flex:0 0 auto;width:20px;height:20px;color:var(--accent);margin-top:1px;}
+  .io-notice p{margin:0;font-family:var(--font-body);font-size:14px;line-height:1.45;color:var(--fg-soft);}
+  .io-notice b{color:var(--fg);font-weight:600;}
+
+  /* ---- Capability bullets ---- */
+  .io-caps{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .io-caps li{display:flex;gap:10px;align-items:flex-start;font-family:var(--font-body);font-size:15px;line-height:1.45;color:var(--fg-muted);}
+  .io-tick{flex:0 0 auto;width:18px;height:18px;margin-top:1px;color:var(--accent);}
+
+  /* ---- Form card ---- */
+  .io-card{display:flex;flex-direction:column;gap:14px;margin-top:26px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.05);}
+  .io-field{display:flex;flex-direction:column;}
+  .io-field label{font-family:var(--font-head);font-weight:700;font-size:12px;letter-spacing:0.01em;color:var(--fg-soft);margin-bottom:7px;}
+  .io-input{width:100%;height:48px;padding:0 15px;background:var(--surface-2);border:1px solid var(--border-input);border-radius:12px;color:var(--fg);font-family:var(--font-body);font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .io-input::placeholder{color:rgba(245,247,255,0.4);}
+  .io-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
+  select.io-input{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F5F7FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+  select.io-input:invalid{color:rgba(245,247,255,0.4);}
+  .io-grid{display:grid;gap:14px;}
+  @media(min-width:500px){.io-grid{grid-template-columns:1fr 1fr;}}
+  .io-check{display:flex;gap:10px;align-items:flex-start;font-family:var(--font-body);font-size:13px;line-height:1.4;color:var(--fg-muted);cursor:pointer;}
+  .io-check input{flex:0 0 auto;width:16px;height:16px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer;}
+  .io-hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+  .io-submit{appearance:none;border:none;width:100%;height:50px;margin-top:4px;border-radius:999px;background:var(--fg);color:#07091A;font-family:var(--font-head);font-weight:700;font-size:16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform .15s ease,opacity .15s ease;}
+  .io-submit:hover{transform:translateY(-1px);}
+  .io-submit:disabled{opacity:0.7;cursor:default;transform:none;}
+  .io-submit .arr{font-weight:500;}
+  .io-status{margin:0;font-family:var(--font-body);font-size:13px;line-height:1.4;min-height:1.4em;}
+
+  /* ---- Confirmation ---- */
+  .io-confirm{align-items:flex-start;outline:none;}
+  .io-confirm-badge{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--accent);color:var(--accent);}
+  .io-confirm h2{margin:0;font-family:var(--font-head);font-weight:700;font-size:22px;letter-spacing:-0.01em;color:var(--fg);}
+  .io-confirm p{margin:0;font-family:var(--font-body);font-size:15px;line-height:1.5;color:var(--fg-soft);}
+  .io-confirm .io-confirm-sub{font-size:13px;color:var(--fg-dim);}
+
+  /* ---- Small print ---- */
+  .io-fine{margin:16px 2px 0;font-family:var(--font-body);font-size:12.5px;line-height:1.5;color:var(--fg-dim);}
+  .io-fine a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="io-wrap">
+
+  <header class="io-top">
+    <a class="io-brand" href="https://adya.ai" aria-label="Adya home">
+      <img src="data:image/webp;base64,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" alt="" width="32" height="28">
+      <span class="io-wordmark">Adya</span>
+    </a>
+  </header>
+
+  <main class="io-main">
+    <!-- Event line, styled as the Adya eyebrow pill (SOP 3.1 item 1). Same on all three pages. -->
+    <div class="io-eyebrow"><span class="dot"></span>Google I/O Connect India 2026</div>
+
+    <!-- PLATFORM CONTENT — GTM -->
+    <h1 class="io-h1">GTM. <em>Sell.</em></h1>
+    <p class="io-pitch">One agent runs the entire go-to-market motion, end to end.</p>
+
+    <div class="io-notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <p>Heads up: <b data-platform-name>GTM</b> runs on desktop. Sign up here on your phone, and we'll email you a one-click link to open it on your laptop.</p>
+    </div>
+
+    <ul class="io-caps">
+      <li><svg class="io-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>One agent runs marketing, demand gen, multi-channel outreach, sales co-pilot and support.</span></li>
+      <li><svg class="io-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Email, LinkedIn, calling and WhatsApp, every account worked in parallel.</span></li>
+      <li><svg class="io-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Capacity you configure, not headcount you recruit.</span></li>
+    </ul>
+    <!-- /PLATFORM CONTENT -->
+
+    <form id="io-form" class="io-card" novalidate>
+      <div class="io-field">
+        <label for="io-name">Full name</label>
+        <input class="io-input" id="io-name" name="full_name" type="text" autocomplete="name" autofocus required placeholder="Your name">
+      </div>
+      <div class="io-field">
+        <label for="io-email">Work email</label>
+        <input class="io-input" id="io-email" name="work_email" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      </div>
+      <div class="io-field">
+        <label for="io-company">Company</label>
+        <input class="io-input" id="io-company" name="company" type="text" autocomplete="organization" required placeholder="Company or organisation">
+      </div>
+      <div class="io-grid">
+        <div class="io-field">
+          <label for="io-role">Role</label>
+          <select class="io-input" id="io-role" name="role" required>
+            <option value="" disabled selected>Select role</option>
+            <option>Engineering</option>
+            <option>Product</option>
+            <option>Sales &amp; GTM</option>
+            <option>Strategy &amp; Exec</option>
+            <option>Founder</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="io-field">
+          <label for="io-country">Country</label>
+          <select class="io-input" id="io-country" name="country" required>
+            <option value="" disabled selected>Select country</option>
+            <option>India</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>United Arab Emirates</option>
+            <option>Singapore</option>
+            <option>Australia</option>
+            <option>Canada</option>
+            <option>Germany</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <label class="io-check">
+        <input id="io-team" type="checkbox">
+        <span>I want to bring my team onto this.</span>
+      </label>
+      <div class="io-field" id="io-team-size-wrap" hidden>
+        <label for="io-team-size">Team size</label>
+        <select class="io-input" id="io-team-size" name="team_size" disabled>
+          <option value="" disabled selected>Select team size</option>
+          <option>2-10</option>
+          <option>11-50</option>
+          <option>51-200</option>
+          <option>200+</option>
+        </select>
+      </div>
+      <label class="io-check">
+        <input id="io-consent" type="checkbox">
+        <span>Send me the setup email and occasional product updates from Adya. I can unsubscribe anytime.</span>
+      </label>
+
+      <!-- Honeypot: off-screen, ignored by humans, filled by bots. -->
+      <div class="io-hp" aria-hidden="true">
+        <label for="io-company-url">Company URL</label>
+        <input id="io-company-url" name="company_url" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <input type="hidden" name="platform" value="gtm">
+      <button type="submit" class="io-submit">Email me the link <span class="arr">&rarr;</span></button>
+      <p class="io-status" data-adya-form-status role="status" aria-live="polite"></p>
+    </form>
+
+    <div id="io-confirm" class="io-card io-confirm" hidden>
+      <div class="io-confirm-badge">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2>You're in.</h2>
+      <p data-confirm-line>You are in. Check your email for the link to open GTM on your laptop.</p>
+      <p class="io-confirm-sub">Reading this on your phone? That's fine. Star the email and open it on your laptop later.</p>
+    </div>
+
+    <p class="io-fine">We'll email you a one-click link to open <span data-platform-name>GTM</span> on desktop, plus occasional product updates if you opt in. Unsubscribe anytime. See our <a href="/privacy/">Privacy Policy</a>.</p>
+  </main>
+</div>
+
+<script>window.IO_PLATFORM='gtm';</script>
+<script src="/io/assets/sheets-submit.js"></script>
+<script src="/io/assets/io-form.js" defer></script>
+</body>
+</html>

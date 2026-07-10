@@ -1,0 +1,11 @@
+{
+  "name": "gio-connect",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Adya booth signup funnel for Google I/O Connect India 2026 (Vanij, GTM, RAS).",
+  "scripts": {
+    "check": "for f in serverless/*.cjs api/v1/sheets/submit.js api/io/open.js io/assets/*.js; do node -c \"$f\"; done && echo ok"
+  },
+  "engines": { "node": ">=18" }
+}
